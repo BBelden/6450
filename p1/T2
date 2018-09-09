@@ -1,0 +1,5 @@
+rm -rf infile outfile
+cat p1all256 p1all256 p1all256 > infile
+./p1 
+cmp infile outfile    # <-- works for binary also
+echo DONE

@@ -1,0 +1,93 @@
+vs  smt        1
+vs  sut        2
+vs  smtother   3
+vs  smtcs      4
+vs  sutother   5
+vs  sutcs      6
+
+vr  rtop      101 1.1  201 2.1
+vr  rmtother  102 1.2  301 3.1
+vr  rmtcs     103 1.3  401 4.1
+vr  rutother  202 2.2  501 5.1
+vr  rutcs     203 2.3  601 6.1
+
+vh  hmt1  302 3.2
+vh  hmt2  303 3.3
+vh  hmt3  402 4.2
+vh  hmt4  403 4.3
+
+vh  hut1  502 5.2
+vh  hut2  503 5.3
+vh  hut3  602 6.2
+vh  hut4  603 6.3
+
+route  rtop  3  101  1.2
+route  rtop  4  101  1.3
+route  rtop  5  201  2.2
+route  rtop  6  201  2.3
+
+route  rmtother  3  301
+# route  rmtother  4  102  1.3    # without this packets travel up to rtop
+route  rmtother  def  102  1.1
+route  rmtcs     4  401
+# route  rmtcs     3  103  1.2    # without this packets travel up to rtop
+route  rmtcs     def  103  1.1
+
+route  rutother  5  501
+# route  rutother  6  202  2.3    # without this packets travel up to rtop
+route  rutother  def  202  2.1
+route  rutcs     6  601
+# route  rutcs     5  203  2.2    # without this packets travel up to rtop
+route  rutcs     def  203  2.1
+
+route  hmt1  3  302
+route  hmt1  def  302  3.1
+route  hmt2  3  303
+route  hmt2  def  303  3.1
+route  hmt3  4  402
+route  hmt3  def  402  4.1
+route  hmt4  4  403
+route  hmt4  def  403  4.1
+
+route  hut1  5  502
+route  hut1  def  502  5.1
+route  hut2  5  503
+route  hut2  def  503  5.1
+route  hut3  6  602
+route  hut3  def  602  6.1
+route  hut4  6  603
+route  hut4  def  603  6.1
+
+
+prt hello world
+prt
+
+prt RMB trtest hmt1 hmt2  ** trtest
+prt
+iptest  hmt1  hmt2
+pause 3
+prt
+
+prt RMB trtest hmt1 hmt3  ** trtest   (thru rtop unless we UN-comment above lines)
+prt
+iptest  hmt1  hmt3
+pause 3
+prt
+
+prt RMB trtest rmtother rutother  ** trtest
+prt
+iptest  rmtother  rutother
+pause 3
+prt
+
+prt RMB trtest hmt1 hut4  ** trtest
+prt
+iptest  hmt1  hut4
+pause 3
+prt
+
+prt RMB trtest hut1 hmt4  ** trtest
+prt
+iptest  hut1  hmt4
+pause 3
+prt
